@@ -1,0 +1,2 @@
+This is a simple registration and authorization server. During registration, it gets username and password, hashes the password, creates a new user, adds it to the array of users, overwrites the json file and responds with a message. Authorization process works by getting and verifying data. 
+In this project I used popular 'bcrypt' framework for hashing passwords.
