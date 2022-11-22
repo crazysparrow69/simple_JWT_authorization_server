@@ -17,6 +17,7 @@ const handleRegistration = async (req, res) => {
   try {
     newUser = {
       'username': username,
+      'roles': { 'User': 3010 },
       'password': await bcrypt.hash(password, 10)
     };
 

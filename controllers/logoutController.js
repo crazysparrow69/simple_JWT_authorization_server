@@ -21,6 +21,7 @@ const handleLogout = async (req, res) => {
   const currentUser = {};
   currentUser.username = foundUser[0].username;
   currentUser.password = foundUser[0].password;
+  currentUser.roles = foundUser[0].roles;
   usersDB.setUsers([ ...otherUsers, currentUser ]);
 
   await fsPromises.writeFile(
