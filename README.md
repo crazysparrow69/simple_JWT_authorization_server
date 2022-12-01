@@ -5,4 +5,4 @@ This is a simple registration and JWT-authorization server. During registration,
 copy and paste, it works automatically;
 4) after getting useful information, the user can logout by sending blank GET request to '../logout'. In that case, the server deletes REFRESH_TOKEN from current user in data base and from cookies.
 
-In this project I used popular 'bcrypt' framework for hashing passwords, 'dotenv' for working with environment variables, and 'jsonwebtoken' for tokens.
+In this project I used popular 'bcrypt' framework for hashing passwords, 'dotenv' for working with environment variables, 'mongoose' for MongoDB and 'jsonwebtoken' for tokens.
