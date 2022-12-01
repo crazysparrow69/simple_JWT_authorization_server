@@ -1,19 +1,12 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
-const fsPromises = require('fs').promises;
-const path = require('path');
-
-const usersDB = {
-  users: require('../models/usersDB.json'),
-  setUsers: function (data) { this.users = data }
-};
+const User = require('../models/User');
 
 const handleLogin = async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password) return res.status(400).json({ 'message': 'Username and password required' });
 
-  const foundUser = usersDB.users.find(person => person.username === username);
+  const foundUser = await User.findOne({ username: username }).exec();
   if (!foundUser) return res.status(409).json({ 'message': "User with that name doesn't exist" });
 
   const validity = await bcrypt.compare(password, foundUser.password);
@@ -37,14 +30,8 @@ const handleLogin = async (req, res) => {
     );
 
     // Saving jwt with current user
-    const otherUsers = usersDB.users.filter(person => person.username !== foundUser.username);
-    const authUser = { ...foundUser, refreshToken };
-    usersDB.setUsers([ ...otherUsers, authUser ]);
-
-    await fsPromises.writeFile(
-      path.join(__dirname, '..', 'models', 'usersDB.json'),
-      JSON.stringify(usersDB.users)
-    );
+    foundUser.refreshToken = refreshToken;
+    await foundUser.save();
     
     res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
     res.json({ 
